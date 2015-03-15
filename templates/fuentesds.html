@@ -1,0 +1,25 @@
+<head>
+    <title>Flask-SocketIO Test</title>
+    <script src="{{ url_for('static', filename='bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+
+    <script src="{{ url_for('static', filename='bower_components/d3/d3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bower_components/epoch/epoch.min.js') }}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/epoch/epoch.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+<body>    
+    <div class="container">
+    <h1>Lista De Fuentes en Servidor DataStreaming</h1> 
+    
+    
+    {%for i in range (cantidad)%}
+    <li>
+    {{fuentes[i]}}
+    </li>
+    {%endfor%}
+
+    </div>
+    
+</body>
+</html>

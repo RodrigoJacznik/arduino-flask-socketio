@@ -1,5 +1,9 @@
 from __future__ import print_function, division, unicode_literals
 
+from consumer import *
+from socket_wrapp import Socket
+from protocol import *
+
 from gevent import monkey
 monkey.patch_all()
 
@@ -95,6 +99,21 @@ def historico_consulta(tm_inicio, tm_fin):
         h['data'].append(d['humedad'])
 
     return render_template('historico.html', data=data)
+
+@app.route('/fuentesds')
+def fuentesDS():
+    
+    cons = Consumidor(Socket())
+    cons.connect_server("127.0.0.1",8888)
+    sources2=[]  
+    sources = [" ".join(data.split(',')) for data in cons.request_sources()]
+    
+    print (sources)
+  
+    for fuente in sources:
+        print (fuente)
+   # return render_template('fuentesds.html',listaFuentes=("\n".join(sources)))
+    return render_template('fuentesds.html',fuentes=sources,cantidad=len(sources))
 
 
 
