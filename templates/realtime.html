@@ -2,7 +2,8 @@
 {% block title %} EMA Realtime {% endblock %}
 {% block script %}
     <script src="{{ url_for('static', filename='bower_components/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='bower_components/socket.io-client-fixed/dist/socket.io.js') }}"></script>
+    <!--<script src="{{ url_for('static', filename='bower_components/socket.io-client-fixed/dist/socket.io.js') }}"></script>-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
 
     <script src="{{ url_for('static', filename='bower_components/d3/d3.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bower_components/epoch/epoch.min.js') }}"></script>
