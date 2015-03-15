@@ -1,4 +1,4 @@
-from __future__ import print_function, division, unicode_literals
+from __future__ import print_function, division
 
 from consumer import *
 from socket_wrapp import Socket
@@ -104,7 +104,7 @@ def historico_consulta(tm_inicio, tm_fin):
 @app.route('/fuentesds')
 def fuentesDS():
     
-   # cons = Consumidor(Socket())
+   # cons = Consumidor(Socket()): EN APP
     cons.connect_server("127.0.0.1",8888)
     sources2=[]  
     sources = [" ".join(data.split(',')) for data in cons.request_sources()]
@@ -114,13 +114,17 @@ def fuentesDS():
 @app.route('/fuentesds/<idFuente>')
 def fuentesds_id(idFuente):
     print(idFuente)
-    datos=[]
-   
+    datos=[] 
+    i=0
+     
     if (cons.select_source(idFuente)):
         for dato in cons.start_stream(GET_OP_NORMAL,1):
-            datos.append(dato)
-            print (dato)
-
+            i=i+1
+            dato=dato.split(';')            
+            datos.append(("{x:"+dato[0]+",y:"+dato[1]+"}").strip("'"))
+            
+        datos=str(datos) 
+        print(datos)                        
         return render_template('rtds.html',id =idFuente,datos=datos)
     else:
         return ("FUENTE INEXISTENTE") #Crear Pagina de ERROR
