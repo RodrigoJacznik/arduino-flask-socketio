@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+ <a> Visualizando datos de la fuente {{id}} desde el servidor DataStreaming. Refresh para actualizar!</a>
+ <div class="container">
+      
+        <h4>Temperatura C°</h4>
+        <div id="area_temp" class="epoch" style="height: 260px;width:100%"></div>
+      
+ </div>
+
+<script type="text/javascript">
+
+var data_temp = [{label:'Temperatura', values:{{datos|replace("'","") }}}];
+
+var area_temp = $('#area_temp').epoch({
+										type:'line', 
+										data: data_temp,
+										axes: ['left',  'bottom'],
+									});
+
+</script>
+
+
+{% endblock %}

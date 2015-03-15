@@ -1,5 +1,9 @@
 {% extends "base.html" %}  
 {% block content %}
-<a href="{{ url_for('realtime') }}">Consulta en tiempo real</a> <br>
-<a href="{{ url_for('historico') }}">Consulta historica</a>
+<div class="container">
+	<h1>Bienvenido/a!</h1>
+	<a href="{{ url_for('realtime') }}">Consulta en tiempo real</a> <br>
+	<a href="{{ url_for('historico') }}">Consulta historica</a><br>
+	<a href="{{ url_for('fuentesDS') }}">Consulta DataStreaming</a>
+</div>
 {% endblock %}

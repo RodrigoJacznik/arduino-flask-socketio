@@ -1,4 +1,8 @@
-from __future__ import print_function, division, unicode_literals
+from __future__ import print_function, division
+
+from consumer import *
+from socket_wrapp import Socket
+from protocol import *
 
 from gevent import monkey
 monkey.patch_all()
@@ -22,6 +26,7 @@ app.config.from_object('config')
 app.debug = True
 socketio = SocketIO(app)
 thread = None
+cons=Consumidor(Socket()) #consumidor global. Un solo connect en fuentesDS!por lo tanto entrar siempreprimero a /fuenteds!!
 
 class ArduinoMock():
 
@@ -96,6 +101,33 @@ def historico_consulta(tm_inicio, tm_fin):
 
     return render_template('historico.html', data=data)
 
+@app.route('/fuentesds')
+def fuentesDS():
+    
+   # cons = Consumidor(Socket()): EN APP
+    cons.connect_server("127.0.0.1",8888)
+    sources2=[]  
+    sources = [" ".join(data.split(',')) for data in cons.request_sources()]
+    
+    return render_template('fuentesds.html',fuentes=sources,cantidad=len(sources))
+
+@app.route('/fuentesds/<idFuente>')
+def fuentesds_id(idFuente):
+    print(idFuente)
+    datos=[] 
+    i=0
+     
+    if (cons.select_source(idFuente)):
+        for dato in cons.start_stream(GET_OP_NORMAL,1):
+            i=i+1
+            dato=dato.split(';')            
+            datos.append(("{x:"+dato[0]+",y:"+dato[1]+"}").strip("'"))
+            
+        datos=str(datos) 
+        print(datos)                        
+        return render_template('rtds.html',id =idFuente,datos=datos)
+    else:
+        return ("FUENTE INEXISTENTE") #Crear Pagina de ERROR
 
 
 @socketio.on('connect', namespace='/test')
