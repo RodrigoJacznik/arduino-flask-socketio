@@ -26,6 +26,7 @@ app.config.from_object('config')
 app.debug = True
 socketio = SocketIO(app)
 thread = None
+cons=Consumidor(Socket()) #consumidor global. Un solo connect en fuentesDS!por lo tanto entrar siempreprimero a /fuenteds!!
 
 class ArduinoMock():
 
@@ -103,17 +104,26 @@ def historico_consulta(tm_inicio, tm_fin):
 @app.route('/fuentesds')
 def fuentesDS():
     
-    cons = Consumidor(Socket())
+   # cons = Consumidor(Socket())
     cons.connect_server("127.0.0.1",8888)
     sources2=[]  
     sources = [" ".join(data.split(',')) for data in cons.request_sources()]
-   
+    
     return render_template('fuentesds.html',fuentes=sources,cantidad=len(sources))
 
 @app.route('/fuentesds/<idFuente>')
 def fuentesds_id(idFuente):
-    return render_template('rtds.html',id =idFuente)
+    print(idFuente)
+    datos=[]
+   
+    if (cons.select_source(idFuente)):
+        for dato in cons.start_stream(GET_OP_NORMAL,1):
+            datos.append(dato)
+            print (dato)
 
+        return render_template('rtds.html',id =idFuente,datos=datos)
+    else:
+        return ("FUENTE INEXISTENTE") #Crear Pagina de ERROR
 
 
 @socketio.on('connect', namespace='/test')
