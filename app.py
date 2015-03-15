@@ -107,13 +107,12 @@ def fuentesDS():
     cons.connect_server("127.0.0.1",8888)
     sources2=[]  
     sources = [" ".join(data.split(',')) for data in cons.request_sources()]
-    
-    print (sources)
-  
-    for fuente in sources:
-        print (fuente)
-   # return render_template('fuentesds.html',listaFuentes=("\n".join(sources)))
+   
     return render_template('fuentesds.html',fuentes=sources,cantidad=len(sources))
+
+@app.route('/fuentesds/<idFuente>')
+def fuentesds_id(idFuente):
+    return render_template('rtds.html',id =idFuente)
 
 
 

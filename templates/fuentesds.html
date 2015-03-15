@@ -13,9 +13,12 @@
     <h1>Lista De Fuentes en Servidor DataStreaming</h1> 
     
     
-    {%for i in range (cantidad)%}
+    {%for i in range (cantidad-1)%}
     <li>
     {{fuentes[i]}}
+    {%if i != 0 %}
+    <a href="fuentesds/{{i}}">Consultar!</a>
+    {% endif %}
     </li>
     {%endfor%}
 
