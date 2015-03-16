@@ -28,11 +28,11 @@
         $(document).ready(function(){
 
             var format_date = function(d) {
-              return new Date(d).toLocaleString();
+              return new Date(d).toUTCString().replace(' GMT', '');
             }
 
             var data_temp = [
-              { label: 'Temperatura', values: [{time: new Date(), y: 20}]}
+              { label: 'Temperatura', values: [{time: Date(), y: 20}]}
             ];
 
             var temperatura = $('#area_temp').epoch({
@@ -60,9 +60,9 @@
             var presion = $('#area_presion').epoch({
               type: 'time.line',
               data: data_presion,
-              axes: ['left', 'right', 'bottom'],
-              tickFormats: {left: function (d) { return d; }},
-              tickFormats: {bottom: function(d) { return format_date(d); }}
+              axes: ['left', 'bottom', 'right'],
+              tickFormats: { bottom: function(d) { return format_date(d); },
+                             left: function (d) { return d; }}
             });
 
             var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
@@ -72,6 +72,7 @@
             });
 
             socket.on('EMA data', function(msg) {
+                console.log(msg.time)
                 temperatura.push([{'time': msg.time, 'y': msg.temperatura}]);
                 presion.push([{'time': msg.time, 'y': msg.presion}]);
                 humedad.push([{'time': msg.time, 'y': msg.humedad}]);  
