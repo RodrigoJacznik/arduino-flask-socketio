@@ -30,7 +30,7 @@ class Arduino():
 
 
 def background_thread():
-    serial = ArduinoMock()
+    serial = Arduino('/dev/ttyACM0', 9600)
 
     temp = DataType.get_or_create('Temperatura', 'float')
     hume = DataType.get_or_create('Humedad', 'int')
